@@ -1,6 +1,6 @@
+import time
 import board
 from adafruit_lps35hw import LPS35HW, DataRate
-import time
 
 i2c = board.I2C()
 lps = LPS35HW(i2c)
@@ -10,19 +10,19 @@ lps.take_measurement()
 
 
 while True:
-   print("Pressure: %.2f hPa" % lps.pressure)
-   print("")
-   time.sleep(1)
-   print("Pressure: %.2f hPa" % lps.pressure)
-   print("")
-   time.sleep(1)
-   print("Pressure: %.2f hPa" % lps.pressure)
-   print("")
-   time.sleep(1)
+    print("Pressure: %.2f hPa" % lps.pressure)
+    print("")
+    time.sleep(1)
+    print("Pressure: %.2f hPa" % lps.pressure)
+    print("")
+    time.sleep(1)
+    print("Pressure: %.2f hPa" % lps.pressure)
+    print("")
+    time.sleep(1)
 
-   #take another measurement
-   lps.take_measurement()
-   
-   print("New Pressure: %.2f hPa" % lps.pressure)
-   print("")
-   time.sleep(1)
+    #take another measurement
+    lps.take_measurement()
+
+    print("New Pressure: %.2f hPa" % lps.pressure)
+    print("")
+    time.sleep(1)

@@ -1,6 +1,6 @@
+import time
 import board
 import adafruit_lps35hw
-import time
 
 i2c = board.I2C()
 lps = adafruit_lps35hw.LPS35HW(i2c)

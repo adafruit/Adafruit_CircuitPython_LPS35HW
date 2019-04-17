@@ -1,6 +1,7 @@
+import time
 import board
 import adafruit_lps35hw
-import time
+
 i2c = board.I2C()
 lps = adafruit_lps35hw.LPS35HW(i2c)
 
@@ -11,7 +12,7 @@ lps.pressure_threshold = 1030
 lps.high_threshold_enabled = True
 
 while True:
-   print("Pressure: %.2f hPa" % lps.pressure)
-   print("Threshhold exceeded: %s" % lps.high_threshold_exceeded)
-   print("")
-   time.sleep(1)
+    print("Pressure: %.2f hPa" % lps.pressure)
+    print("Threshhold exceeded: %s" % lps.high_threshold_exceeded)
+    print("")
+    time.sleep(1)
