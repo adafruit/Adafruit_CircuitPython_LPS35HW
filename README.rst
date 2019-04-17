@@ -55,7 +55,7 @@ To install in a virtual environment in your current project:
 Usage Example
 =============
 
-.. todo:: Add a quick, simple example. It and other examples should live in the examples folder and be included in docs/examples.rst.
+See the guide at: https://learn.adafruit.com
 
 Contributing
 ============
