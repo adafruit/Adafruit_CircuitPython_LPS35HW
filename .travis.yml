@@ -15,7 +15,7 @@ cache:
 #       or remove the env block entirely and remove the condition in the
 #       deploy block.
 env:
-  - DEPLOY_PYPI="false"
+  - DEPLOY_PYPI="true"
 
 deploy:
   - provider: releases
@@ -31,7 +31,7 @@ deploy:
   - provider: pypi
     user: adafruit-travis
     password:
-      secure: #-- PASTE ENCRYPTED PASSWORD HERE --#
+      secure: ndbXncoyquCmb5BAfqNSkcO2tVJt76mXe55fF/ZMj6JNADviDrCrYJKI9A17l8XOryVYNVhqSOZZzYBrKmcJnhjIJ9ZlMdua0F6Hyz2HZqR9gN1kuhtc4y9ULxs2VxrNszwDSvswtASh1qYwBys2jcs/0rOcPR7KvyDQW8Pv/j7qDP3mHtnTnzFfmgmU2kTUJ8F5eYui8znoZw/CNcsvMtDVrIM+tFmbylzJ8bIgDVX+zOUgffQdg5MIBrMvzWNN+lfz5bWiK8MOR5J2p1PiRWElyueuAm4yrXjucYeLSQl9SQT90Q1Ou1Urw3y3miMODo0MNBgKW3snhRiy3aN6h4pQ2Qn47v7RwcvmAWHHfBQ2lnReEQx5tW49CTPeOeijejv2tODfd5WKhh1sfe+p7r60d/XxNJyN1RTWRv7gKvivX+/Exhsvz78B6g4etBihQJx4/nup/LbrPbiJ7xQcjtKYXgQMaRHPQ2NMsjluuYxxZ8Ktu2rug739UdquAk5x++Uh4oo6HgHlpRQiDxWIQvIjxe3xQNUJPhwr148cXalXiShwB8zUCNf0P48oKHbIvBiJV8BVFZ+Va1V+BFKDpsI1smpCp14wszaxXXPsaVwwvrk6UZeHLmRTzweKE6sA6rkOtdr1MRgFquwYWafoKARTiGgRIXmMr9RKS0xAZAg=
     on:
       tags: true
       condition: $DEPLOY_PYPI = "true"
