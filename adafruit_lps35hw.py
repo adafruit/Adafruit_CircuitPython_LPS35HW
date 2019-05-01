@@ -34,7 +34,6 @@ Implementation Notes
 **Hardware:**
 
 **Software and Dependencies:**
-
  * Adafruit CircuitPython firmware for the supported boards:
     https://github.com/adafruit/circuitpython/releases
  * Adafruit's Bus Device library: https://github.com/adafruit/Adafruit_CircuitPython_BusDevice
@@ -105,18 +104,14 @@ class DataRate: # pylint: disable=too-few-public-methods
     RATE_50_hz = const(0x04)
     RATE_75_hz = const(0x05)
 
-class LPS35HW:
+class LPS35HW: # pylint: disable=too-many-instance-attributes
     """Driver for the ST LPS35HW MEMS pressure sensor
 
         :param ~busio.I2C i2c_bus: The I2C bus the INA260 is connected to.
-        :param address: The I2C device address for the sensor. Default is ``0x5d``.
+        :param address: The I2C device address for the sensor. Default is ``0x5d`` but will accept
+            ``0x5c`` when the ``SDO`` pin is connected to Ground.
 
     """
-
-
-    reset_pressure = RWBit(_INTERRUPT_CFG, 4)
-    """Reset ``pressure`` to be reported as the measured absolute value"""
-
 
     data_rate = RWBits(3, _CTRL_REG1, 4)
     """The rate at which the sensor measures ``pressure`` and ``temperature``. ``data_rate`` should
@@ -138,16 +133,17 @@ class LPS35HW:
     _reset = RWBit(_CTRL_REG2, 2)
     _one_shot = RWBit(_CTRL_REG2, 0)
 
-    _interrupt_active_low = RWBit(_CTRL_REG3, 7)
-    _interrupt_open_drain = RWBit(_CTRL_REG3, 6)
-    _int_pin_on_high = RWBit(_CTRL_REG3, 1)
-    _int_pin_on_low = RWBit(_CTRL_REG3, 0)
+    # registers for configuring INT pin behavior
+    _interrupt_cfg = UnaryStruct(_CTRL_REG3, "<B") # to read all values for latching?
 
+    # INT status registers
     _interrupt_active = RWBit(_INT_SOURCE, 2)
     _pressure_low = RWBit(_INT_SOURCE, 1)
     _pressure_high = RWBit(_INT_SOURCE, 0)
 
     _auto_zero = RWBit(_INTERRUPT_CFG, 5)
+    _reset_zero = RWBit(_INTERRUPT_CFG, 4)
+
     _interrupts_enabled = RWBit(_INTERRUPT_CFG, 3)
     _interrupt_latch = RWBit(_INTERRUPT_CFG, 2)
     _interrupt_low = RWBit(_INTERRUPT_CFG, 1)
@@ -158,7 +154,6 @@ class LPS35HW:
     _chip_id = UnaryStruct(_WHO_AM_I, "<B")
     _pressure_threshold = UnaryStruct(_THS_P_L, "<H")
 
-    # def __init__(self, i2c_bus, address=0x5c):
     def __init__(self, i2c_bus, address=0x5d):
         self.i2c_device = i2cdevice.I2CDevice(i2c_bus, address)
         if self._chip_id != 0xb1:
@@ -187,7 +182,6 @@ class LPS35HW:
     @property
     def temperature(self):
         """The current temperature measurement in degrees C"""
-
         return self._raw_temperature / 100.0
 
     def reset(self):
@@ -210,13 +204,14 @@ class LPS35HW:
         while self._auto_zero:
             pass
 
-    # def reset_pressure(self):
-    #     """Reset ``pressure`` to be reported as the measured absolute value"""
-    #     self._reset_zero = True
+    def reset_pressure(self):
+        """Reset ``pressure`` to be reported as the measured absolute value"""
+        self._reset_zero = True
 
     @property
     def pressure_threshold(self):
-        """The high presure threshold. Use ``high_threshold_enabled`` to use it"""
+        """The high presure threshold. Use ``high_threshold_enabled`` or  ``high_threshold_enabled``
+        to use it"""
         return self._pressure_threshold / 16
 
     @pressure_threshold.setter
@@ -231,15 +226,28 @@ class LPS35HW:
 
     @high_threshold_enabled.setter
     def high_threshold_enabled(self, value):
-        if value:
-            self._interrupts_enabled = True
-            self._interrupt_high = True
-        else:
-            self._interrupts_enabled = False
-            self._interrupt_high = False
+        self._interrupts_enabled = value
+        self._interrupt_high = value
+
+    @property
+    def low_threshold_enabled(self):
+        """Set to `True` or `False` to enable or disable the low pressure threshold. **Note the
+        low pressure threshold only works in relative mode**"""
+        return self._interrupts_enabled and self._interrupt_low
+
+    @low_threshold_enabled.setter
+    def low_threshold_enabled(self, value):
+        self._interrupts_enabled = value
+        self._interrupt_low = value
 
     @property
     def high_threshold_exceeded(self):
         """Returns `True` if the pressure high threshold has been exceeded. Must be enabled by
         setting ``high_threshold_enabled`` to `True` and setting a ``pressure_threshold``."""
         return self._pressure_high
+
+    @property
+    def low_threshold_exceeded(self):
+        """Returns `True` if the pressure low threshold has been exceeded. Must be enabled by
+        setting ``high_threshold_enabled`` to `True` and setting a ``pressure_threshold``."""
+        return self._pressure_low
