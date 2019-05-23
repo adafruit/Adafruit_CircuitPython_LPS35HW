@@ -164,7 +164,7 @@ class LPS35HW: # pylint: disable=too-many-instance-attributes
         self.reset()
 
         # set data_rate to put the sensor in continuous mode
-        self.data_rate = DataRate.RATE_10_HZ;
+        self.data_rate = DataRate.RATE_10_HZ
 
         self._block_updates = True
         self._interrupt_latch = True
