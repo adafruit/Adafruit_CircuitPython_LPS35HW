@@ -33,6 +33,8 @@ Implementation Notes
 
 **Hardware:**
 
+* `LPS35HW Breakout <https://www.adafruit.com/products/4258>`_
+
 **Software and Dependencies:**
  * Adafruit CircuitPython firmware for the supported boards:
     https://github.com/adafruit/circuitpython/releases
@@ -85,29 +87,29 @@ class DataRate: # pylint: disable=too-few-public-methods
         +===========================+=========================+
         | ``DataRate.ONE_SHOT``     | One shot mode           |
         +---------------------------+-------------------------+
-        | ``DataRate.RATE_1_hz``    | 1 hz                    |
+        | ``DataRate.RATE_1_HZ``    | 1 hz                    |
         +---------------------------+-------------------------+
-        | ``DataRate.RATE_10_hz``   | 10 hz  (Default)        |
+        | ``DataRate.RATE_10_HZ``   | 10 hz  (Default)        |
         +---------------------------+-------------------------+
-        | ``DataRate.RATE_25_hz``   | 25 hz                   |
+        | ``DataRate.RATE_25_HZ``   | 25 hz                   |
         +---------------------------+-------------------------+
-        | ``DataRate.RATE_50_hz``   | 50 hz                   |
+        | ``DataRate.RATE_50_HZ``   | 50 hz                   |
         +---------------------------+-------------------------+
-        | ``DataRate.RATE_75_hz``   | 75 hz                   |
+        | ``DataRate.RATE_75_HZ``   | 75 hz                   |
         +---------------------------+-------------------------+
 
     """
     ONE_SHOT = const(0x00)
-    RATE_1_hz = const(0x01)
-    RATE_10_hz = const(0x02)
-    RATE_25_hz = const(0x03)
-    RATE_50_hz = const(0x04)
-    RATE_75_hz = const(0x05)
+    RATE_1_HZ = const(0x01)
+    RATE_10_HZ = const(0x02)
+    RATE_25_HZ = const(0x03)
+    RATE_50_HZ = const(0x04)
+    RATE_75_HZ = const(0x05)
 
 class LPS35HW: # pylint: disable=too-many-instance-attributes
     """Driver for the ST LPS35HW MEMS pressure sensor
 
-        :param ~busio.I2C i2c_bus: The I2C bus the INA260 is connected to.
+        :param ~busio.I2C i2c_bus: The I2C bus the LPS34HW is connected to.
         :param address: The I2C device address for the sensor. Default is ``0x5d`` but will accept
             ``0x5c`` when the ``SDO`` pin is connected to Ground.
 
@@ -162,7 +164,7 @@ class LPS35HW: # pylint: disable=too-many-instance-attributes
         self.reset()
 
         # set data_rate to put the sensor in continuous mode
-        self.data_rate = DataRate.RATE_10_hz
+        self.data_rate = DataRate.RATE_10_HZ;
 
         self._block_updates = True
         self._interrupt_latch = True
