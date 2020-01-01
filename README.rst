@@ -9,8 +9,8 @@ Introduction
     :target: https://discord.gg/nBQh6qu
     :alt: Discord
 
-.. image:: https://travis-ci.com/adafruit/Adafruit_CircuitPython_LPS35HW.svg?branch=master
-    :target: https://travis-ci.com/adafruit/Adafruit_CircuitPython_LPS35HW
+.. image:: https://github.com/adafruit/Adafruit_CircuitPython_LPS35HW/workflows/Build%20CI/badge.svg
+    :target: https://github.com/adafruit/Adafruit_CircuitPython_LPS35HW/actions/
     :alt: Build Status
 
 A driver for the ST LPS35HW water resistant mems pressure sensor
