@@ -125,6 +125,10 @@ class LPS35HW: # pylint: disable=too-many-instance-attributes
     """True if the low pass filter is enabled. Setting to `True` will reduce the sensor bandwidth
     from ``data_rate/2`` to ``data_rate/9``, filtering out high-frequency noise."""
 
+    low_pass_config = RWBit(_CTRL_REG1, 2)
+    """Setting to `True` will reduce the sensor bandwidth
+    from ``data_rate/9`` to ``data_rate/20``, filtering out high-frequency noise."""
+
     _raw_temperature = ROBits(16, _TEMP_OUT_L, 0, 2)
     _raw_pressure = ROBits(24, _PRESS_OUT_XL, 0, 3)
     _reference_pressure = RWBits(24, _REF_P_XL, 0, 3)
@@ -258,20 +262,3 @@ class LPS35HW: # pylint: disable=too-many-instance-attributes
         """Returns `True` if the pressure low threshold has been exceeded. Must be enabled by
         setting ``high_threshold_enabled`` to `True` and setting a ``pressure_threshold``."""
         return self._pressure_low
-
-    @property
-    def filter_enabled(self):
-        return self._filter_enable
-
-    @filter_enabled.setter
-    def filter_enabled(self, value):
-        # add type/value checks
-        self._filter_enable = value
-
-    @property
-    def filter_config(self):
-        return self._filter_config
-
-    @filter_config.setter
-    def filter_config(self, value):
-        self._filter_config = value
