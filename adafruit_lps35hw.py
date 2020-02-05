@@ -152,6 +152,11 @@ class LPS35HW: # pylint: disable=too-many-instance-attributes
     _interrupt_high = RWBit(_INTERRUPT_CFG, 0)
 
     _reset_filter = ROBits(8, _LPFP_RES, 0, 1)
+    _filter_enable = RWBit(_CTRL_REG1, 3)
+    _filter_config = RWBit(_CTRL_REG1, 2)
+    # 0 x Disabled ODR/2
+    # 1 0 Enabled ODR/9
+    # 1 1 Enabled ODR/20
 
     _chip_id = UnaryStruct(_WHO_AM_I, "<B")
     _pressure_threshold = UnaryStruct(_THS_P_L, "<H")
@@ -253,3 +258,20 @@ class LPS35HW: # pylint: disable=too-many-instance-attributes
         """Returns `True` if the pressure low threshold has been exceeded. Must be enabled by
         setting ``high_threshold_enabled`` to `True` and setting a ``pressure_threshold``."""
         return self._pressure_low
+
+    @property
+    def filter_enabled(self):
+        return self._filter_enable
+
+    @filter_enabled.setter
+    def filter_enabled(self, value):
+        # add type/value checks
+        self._filter_enable = value
+
+    @property
+    def filter_config(self):
+        return self._filter_config
+
+    @filter_config.setter
+    def filter_config(self, value):
+        self._filter_config = value
