@@ -53,33 +53,35 @@ import adafruit_bus_device.i2c_device as i2cdevice
 from adafruit_register.i2c_struct import UnaryStruct
 from adafruit_register.i2c_bits import RWBits, ROBits
 from adafruit_register.i2c_bit import RWBit
+
 # pylint: disable=bad-whitespace
-_INTERRUPT_CFG	= const(0x0B)
-_THS_P_L	    = const(0x0C)
-_THS_P_H	    = const(0x0D)
-_WHO_AM_I 	    = const(0x0F)
-_CTRL_REG1    	= const(0x10)
-_CTRL_REG2    	= const(0x11)
-_CTRL_REG3    	= const(0x12)
-_FIFO_CTRL    	= const(0x14)
-_REF_P_XL    	= const(0x15)
-_REF_P_L    	= const(0x16)
-_REF_P_H    	= const(0x17)
-_RPDS_L	    	= const(0x18)
-_RPDS_H	    	= const(0x19)
-_RES_CONF    	= const(0x1A)
-_INT_SOURCE	    = const(0x25)
-_FIFO_STATUS	= const(0x26)
-_STATUS		    = const(0x27)
-_PRESS_OUT_XL	= const(0x28)
-_PRESS_OUT_L	= const(0x29)
-_PRESS_OUT_H	= const(0x2A)
-_TEMP_OUT_L 	= const(0x2B)
-_TEMP_OUT_H	    = const(0x2C)
-_LPFP_RES	    = const(0x33)
+_INTERRUPT_CFG = const(0x0B)
+_THS_P_L = const(0x0C)
+_THS_P_H = const(0x0D)
+_WHO_AM_I = const(0x0F)
+_CTRL_REG1 = const(0x10)
+_CTRL_REG2 = const(0x11)
+_CTRL_REG3 = const(0x12)
+_FIFO_CTRL = const(0x14)
+_REF_P_XL = const(0x15)
+_REF_P_L = const(0x16)
+_REF_P_H = const(0x17)
+_RPDS_L = const(0x18)
+_RPDS_H = const(0x19)
+_RES_CONF = const(0x1A)
+_INT_SOURCE = const(0x25)
+_FIFO_STATUS = const(0x26)
+_STATUS = const(0x27)
+_PRESS_OUT_XL = const(0x28)
+_PRESS_OUT_L = const(0x29)
+_PRESS_OUT_H = const(0x2A)
+_TEMP_OUT_L = const(0x2B)
+_TEMP_OUT_H = const(0x2C)
+_LPFP_RES = const(0x33)
 # pylint: enable=bad-whitespace
 
-class DataRate: # pylint: disable=too-few-public-methods
+
+class DataRate:  # pylint: disable=too-few-public-methods
     """Options for ``data_rate``
 
         +---------------------------+-------------------------+
@@ -99,6 +101,7 @@ class DataRate: # pylint: disable=too-few-public-methods
         +---------------------------+-------------------------+
 
     """
+
     ONE_SHOT = const(0x00)
     RATE_1_HZ = const(0x01)
     RATE_10_HZ = const(0x02)
@@ -106,7 +109,8 @@ class DataRate: # pylint: disable=too-few-public-methods
     RATE_50_HZ = const(0x04)
     RATE_75_HZ = const(0x05)
 
-class LPS35HW: # pylint: disable=too-many-instance-attributes
+
+class LPS35HW:  # pylint: disable=too-many-instance-attributes
     """Driver for the ST LPS35HW MEMS pressure sensor
 
         :param ~busio.I2C i2c_bus: The I2C bus the LPS34HW is connected to.
@@ -136,7 +140,7 @@ class LPS35HW: # pylint: disable=too-many-instance-attributes
     _one_shot = RWBit(_CTRL_REG2, 0)
 
     # registers for configuring INT pin behavior
-    _interrupt_cfg = UnaryStruct(_CTRL_REG3, "<B") # to read all values for latching?
+    _interrupt_cfg = UnaryStruct(_CTRL_REG3, "<B")  # to read all values for latching?
 
     # INT status registers
     _interrupt_active = RWBit(_INT_SOURCE, 2)
@@ -156,10 +160,10 @@ class LPS35HW: # pylint: disable=too-many-instance-attributes
     _chip_id = UnaryStruct(_WHO_AM_I, "<B")
     _pressure_threshold = UnaryStruct(_THS_P_L, "<H")
 
-    def __init__(self, i2c_bus, address=0x5d):
+    def __init__(self, i2c_bus, address=0x5D):
         self.i2c_device = i2cdevice.I2CDevice(i2c_bus, address)
-        if self._chip_id != 0xb1:
-            raise RuntimeError('Failed to find LPS35HW! Chip ID 0x%x' % self._chip_id)
+        if self._chip_id != 0xB1:
+            raise RuntimeError("Failed to find LPS35HW! Chip ID 0x%x" % self._chip_id)
 
         self.reset()
 
@@ -173,12 +177,12 @@ class LPS35HW: # pylint: disable=too-many-instance-attributes
     def pressure(self):
         """The current pressure measurement in hPa"""
         # reset the filter to prevent spurious readings
-        self._reset_filter # pylint: disable=pointless-statement
+        self._reset_filter  # pylint: disable=pointless-statement
 
         # check for negative and convert
         raw = self._raw_pressure
-        if raw & (1<<23) != 0:
-            raw = (raw - (1<<24))
+        if raw & (1 << 23) != 0:
+            raw = raw - (1 << 24)
         return raw / 4096.0
 
     @property
@@ -219,7 +223,7 @@ class LPS35HW: # pylint: disable=too-many-instance-attributes
     @pressure_threshold.setter
     def pressure_threshold(self, value):
         """The high value threshold"""
-        self._pressure_threshold = (value * 16)
+        self._pressure_threshold = value * 16
 
     @property
     def high_threshold_enabled(self):
