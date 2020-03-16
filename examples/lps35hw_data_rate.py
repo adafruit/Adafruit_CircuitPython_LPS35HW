@@ -20,7 +20,7 @@ while True:
     print("")
     time.sleep(1)
 
-    #take another measurement
+    # take another measurement
     lps.take_measurement()
 
     print("New Pressure: %.2f hPa" % lps.pressure)
