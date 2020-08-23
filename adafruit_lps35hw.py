@@ -54,7 +54,6 @@ from adafruit_register.i2c_struct import UnaryStruct
 from adafruit_register.i2c_bits import RWBits, ROBits
 from adafruit_register.i2c_bit import RWBit
 
-# pylint: disable=bad-whitespace
 _INTERRUPT_CFG = const(0x0B)
 _THS_P_L = const(0x0C)
 _THS_P_H = const(0x0D)
@@ -78,7 +77,6 @@ _PRESS_OUT_H = const(0x2A)
 _TEMP_OUT_L = const(0x2B)
 _TEMP_OUT_H = const(0x2C)
 _LPFP_RES = const(0x33)
-# pylint: enable=bad-whitespace
 
 
 class DataRate:  # pylint: disable=too-few-public-methods
