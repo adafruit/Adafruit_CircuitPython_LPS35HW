@@ -127,7 +127,7 @@ class LPS35HW:  # pylint: disable=too-many-instance-attributes
     """True if the low pass filter is enabled. Setting to `True` will reduce the sensor bandwidth
     from ``data_rate/2`` to ``data_rate/9``, filtering out high-frequency noise."""
 
-    _raw_temperature = ROBits(16, _TEMP_OUT_L, 0, 2)
+    _raw_temperature = UnaryStruct(_TEMP_OUT_L, "<h")
     _raw_pressure = ROBits(24, _PRESS_OUT_XL, 0, 3)
     _reference_pressure = RWBits(24, _REF_P_XL, 0, 3)
     _pressure_offset = RWBits(16, _RPDS_L, 0, 2)
