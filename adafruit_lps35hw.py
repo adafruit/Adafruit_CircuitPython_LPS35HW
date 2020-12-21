@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: Copyright (c) 2019 Bryan Siepert for Adafruit Industries
+#
+# SPDX-License-Identifier: MIT
 # The MIT License (MIT)
 #
 # Copyright (c) 2019 Bryan Siepert for Adafruit Industries
