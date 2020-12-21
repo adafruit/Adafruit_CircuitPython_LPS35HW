@@ -129,19 +129,12 @@ class LPS35HW:  # pylint: disable=too-many-instance-attributes
 
     _raw_temperature = UnaryStruct(_TEMP_OUT_L, "<h")
     _raw_pressure = ROBits(24, _PRESS_OUT_XL, 0, 3)
-    _reference_pressure = RWBits(24, _REF_P_XL, 0, 3)
-    _pressure_offset = RWBits(16, _RPDS_L, 0, 2)
 
     _block_updates = RWBit(_CTRL_REG1, 1)
-
     _reset = RWBit(_CTRL_REG2, 2)
     _one_shot = RWBit(_CTRL_REG2, 0)
 
-    # registers for configuring INT pin behavior
-    _interrupt_cfg = UnaryStruct(_CTRL_REG3, "<B")  # to read all values for latching?
-
     # INT status registers
-    _interrupt_active = RWBit(_INT_SOURCE, 2)
     _pressure_low = RWBit(_INT_SOURCE, 1)
     _pressure_high = RWBit(_INT_SOURCE, 0)
 
