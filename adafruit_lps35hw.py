@@ -85,21 +85,21 @@ _LPFP_RES = const(0x33)
 class DataRate:  # pylint: disable=too-few-public-methods
     """Options for ``data_rate``
 
-        +---------------------------+-------------------------+
-        | ``DataRate``              | Time                    |
-        +===========================+=========================+
-        | ``DataRate.ONE_SHOT``     | One shot mode           |
-        +---------------------------+-------------------------+
-        | ``DataRate.RATE_1_HZ``    | 1 hz                    |
-        +---------------------------+-------------------------+
-        | ``DataRate.RATE_10_HZ``   | 10 hz  (Default)        |
-        +---------------------------+-------------------------+
-        | ``DataRate.RATE_25_HZ``   | 25 hz                   |
-        +---------------------------+-------------------------+
-        | ``DataRate.RATE_50_HZ``   | 50 hz                   |
-        +---------------------------+-------------------------+
-        | ``DataRate.RATE_75_HZ``   | 75 hz                   |
-        +---------------------------+-------------------------+
+    +---------------------------+-------------------------+
+    | ``DataRate``              | Time                    |
+    +===========================+=========================+
+    | ``DataRate.ONE_SHOT``     | One shot mode           |
+    +---------------------------+-------------------------+
+    | ``DataRate.RATE_1_HZ``    | 1 hz                    |
+    +---------------------------+-------------------------+
+    | ``DataRate.RATE_10_HZ``   | 10 hz  (Default)        |
+    +---------------------------+-------------------------+
+    | ``DataRate.RATE_25_HZ``   | 25 hz                   |
+    +---------------------------+-------------------------+
+    | ``DataRate.RATE_50_HZ``   | 50 hz                   |
+    +---------------------------+-------------------------+
+    | ``DataRate.RATE_75_HZ``   | 75 hz                   |
+    +---------------------------+-------------------------+
 
     """
 
@@ -114,9 +114,9 @@ class DataRate:  # pylint: disable=too-few-public-methods
 class LPS35HW:  # pylint: disable=too-many-instance-attributes
     """Driver for the ST LPS35HW MEMS pressure sensor
 
-        :param ~busio.I2C i2c_bus: The I2C bus the LPS34HW is connected to.
-        :param address: The I2C device address for the sensor. Default is ``0x5d`` but will accept
-            ``0x5c`` when the ``SDO`` pin is connected to Ground.
+    :param ~busio.I2C i2c_bus: The I2C bus the LPS34HW is connected to.
+    :param address: The I2C device address for the sensor. Default is ``0x5d`` but will accept
+        ``0x5c`` when the ``SDO`` pin is connected to Ground.
 
     """
 
@@ -193,7 +193,7 @@ class LPS35HW:  # pylint: disable=too-many-instance-attributes
 
     def take_measurement(self):
         """Update the value of ``pressure`` and ``temperature`` by taking a single measurement.
-            Only meaningful if ``data_rate`` is set to ``ONE_SHOT``"""
+        Only meaningful if ``data_rate`` is set to ``ONE_SHOT``"""
         self._one_shot = True
         while self._one_shot:
             pass
