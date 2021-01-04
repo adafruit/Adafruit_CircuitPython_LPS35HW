@@ -1,5 +1,9 @@
 # -*- coding: utf-8 -*-
 
+# SPDX-FileCopyrightText: 2019 Bryan Siepert, written for Adafruit Industries
+#
+# SPDX-License-Identifier: MIT
+
 import os
 import sys
 
@@ -37,6 +41,9 @@ intersphinx_mapping = {
     "CircuitPython": ("https://circuitpython.readthedocs.io/en/latest/", None),
 }
 
+# Show the docstring from both the class and its __init__() method.
+autoclass_content = "both"
+
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ["_templates"]
 
@@ -69,7 +76,13 @@ language = None
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
 # This patterns also effect to html_static_path and html_extra_path
-exclude_patterns = ["_build", "Thumbs.db", ".DS_Store", ".env", "CODE_OF_CONDUCT.md"]
+exclude_patterns = [
+    "_build",
+    "Thumbs.db",
+    ".DS_Store",
+    ".env",
+    "CODE_OF_CONDUCT.md",
+]
 
 # The reST default role (used for this markup: `text`) to use for all
 # documents.
@@ -128,16 +141,12 @@ htmlhelp_basename = "AdafruitLps35hwLibrarydoc"
 
 latex_elements = {
     # The paper size ('letterpaper' or 'a4paper').
-    #
     # 'papersize': 'letterpaper',
     # The font size ('10pt', '11pt' or '12pt').
-    #
     # 'pointsize': '10pt',
     # Additional stuff for the LaTeX preamble.
-    #
     # 'preamble': '',
     # Latex figure (float) alignment
-    #
     # 'figure_align': 'htbp',
 }
 
@@ -165,7 +174,7 @@ man_pages = [
         "Adafruit LPS35HW Library Documentation",
         [author],
         1,
-    )
+    ),
 ]
 
 # -- Options for Texinfo output -------------------------------------------

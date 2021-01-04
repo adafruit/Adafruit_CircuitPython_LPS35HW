@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: 2019 Bryan Siepert, written for Adafruit Industries
+#
+# SPDX-License-Identifier: Unlicense
 import time
 import board
 from adafruit_lps35hw import LPS35HW, DataRate

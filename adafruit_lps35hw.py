@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: Copyright (c) 2019 Bryan Siepert for Adafruit Industries
+#
+# SPDX-License-Identifier: MIT
 # The MIT License (MIT)
 #
 # Copyright (c) 2019 Bryan Siepert for Adafruit Industries
@@ -82,21 +85,21 @@ _LPFP_RES = const(0x33)
 class DataRate:  # pylint: disable=too-few-public-methods
     """Options for ``data_rate``
 
-        +---------------------------+-------------------------+
-        | ``DataRate``              | Time                    |
-        +===========================+=========================+
-        | ``DataRate.ONE_SHOT``     | One shot mode           |
-        +---------------------------+-------------------------+
-        | ``DataRate.RATE_1_HZ``    | 1 hz                    |
-        +---------------------------+-------------------------+
-        | ``DataRate.RATE_10_HZ``   | 10 hz  (Default)        |
-        +---------------------------+-------------------------+
-        | ``DataRate.RATE_25_HZ``   | 25 hz                   |
-        +---------------------------+-------------------------+
-        | ``DataRate.RATE_50_HZ``   | 50 hz                   |
-        +---------------------------+-------------------------+
-        | ``DataRate.RATE_75_HZ``   | 75 hz                   |
-        +---------------------------+-------------------------+
+    +---------------------------+-------------------------+
+    | ``DataRate``              | Time                    |
+    +===========================+=========================+
+    | ``DataRate.ONE_SHOT``     | One shot mode           |
+    +---------------------------+-------------------------+
+    | ``DataRate.RATE_1_HZ``    | 1 hz                    |
+    +---------------------------+-------------------------+
+    | ``DataRate.RATE_10_HZ``   | 10 hz  (Default)        |
+    +---------------------------+-------------------------+
+    | ``DataRate.RATE_25_HZ``   | 25 hz                   |
+    +---------------------------+-------------------------+
+    | ``DataRate.RATE_50_HZ``   | 50 hz                   |
+    +---------------------------+-------------------------+
+    | ``DataRate.RATE_75_HZ``   | 75 hz                   |
+    +---------------------------+-------------------------+
 
     """
 
@@ -111,9 +114,9 @@ class DataRate:  # pylint: disable=too-few-public-methods
 class LPS35HW:  # pylint: disable=too-many-instance-attributes
     """Driver for the ST LPS35HW MEMS pressure sensor
 
-        :param ~busio.I2C i2c_bus: The I2C bus the LPS34HW is connected to.
-        :param address: The I2C device address for the sensor. Default is ``0x5d`` but will accept
-            ``0x5c`` when the ``SDO`` pin is connected to Ground.
+    :param ~busio.I2C i2c_bus: The I2C bus the LPS34HW is connected to.
+    :param address: The I2C device address for the sensor. Default is ``0x5d`` but will accept
+        ``0x5c`` when the ``SDO`` pin is connected to Ground.
 
     """
 
@@ -127,21 +130,14 @@ class LPS35HW:  # pylint: disable=too-many-instance-attributes
     """True if the low pass filter is enabled. Setting to `True` will reduce the sensor bandwidth
     from ``data_rate/2`` to ``data_rate/9``, filtering out high-frequency noise."""
 
-    _raw_temperature = ROBits(16, _TEMP_OUT_L, 0, 2)
+    _raw_temperature = UnaryStruct(_TEMP_OUT_L, "<h")
     _raw_pressure = ROBits(24, _PRESS_OUT_XL, 0, 3)
-    _reference_pressure = RWBits(24, _REF_P_XL, 0, 3)
-    _pressure_offset = RWBits(16, _RPDS_L, 0, 2)
 
     _block_updates = RWBit(_CTRL_REG1, 1)
-
     _reset = RWBit(_CTRL_REG2, 2)
     _one_shot = RWBit(_CTRL_REG2, 0)
 
-    # registers for configuring INT pin behavior
-    _interrupt_cfg = UnaryStruct(_CTRL_REG3, "<B")  # to read all values for latching?
-
     # INT status registers
-    _interrupt_active = RWBit(_INT_SOURCE, 2)
     _pressure_low = RWBit(_INT_SOURCE, 1)
     _pressure_high = RWBit(_INT_SOURCE, 0)
 
@@ -197,7 +193,7 @@ class LPS35HW:  # pylint: disable=too-many-instance-attributes
 
     def take_measurement(self):
         """Update the value of ``pressure`` and ``temperature`` by taking a single measurement.
-            Only meaningful if ``data_rate`` is set to ``ONE_SHOT``"""
+        Only meaningful if ``data_rate`` is set to ``ONE_SHOT``"""
         self._one_shot = True
         while self._one_shot:
             pass
