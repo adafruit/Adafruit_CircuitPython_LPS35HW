@@ -23,8 +23,12 @@ Table of Contents
 .. toctree::
     :caption: Tutorials
 
+    Adafruit LPS33/LPS35 Water Resistant Pressure Sensor Learning Guide <https://learn.adafruit.com/lps35hw-water-resistant-pressure-sensor>
+
 .. toctree::
     :caption: Related Products
+
+    Adafruit LPS33/LPS35 Water Resistant Pressure Sensor <https://www.adafruit.com/product/4258>
 
 .. toctree::
     :caption: Other Links
