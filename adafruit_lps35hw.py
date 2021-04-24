@@ -114,21 +114,54 @@ class DataRate:  # pylint: disable=too-few-public-methods
 class LPS35HW:  # pylint: disable=too-many-instance-attributes
     """Driver for the ST LPS35HW MEMS pressure sensor
 
-    :param ~busio.I2C i2c_bus: The I2C bus the LPS34HW is connected to.
-    :param address: The I2C device address for the sensor. Default is ``0x5d`` but will accept
-        ``0x5c`` when the ``SDO`` pin is connected to Ground.
+    :param ~busio.I2C i2c_bus: The I2C bus the LPS35HW is connected to.
+    :param int address: The I2C device address for the sensor. Default is :const:`0x5d`
+                        but will accept :const:`0x5c` when the ``SDO`` pin is connected to Ground.
+
+
+    **Quickstart: Importing and using the LPS35HW**
+
+        Here is an example of using the :class:`LPS35HW` class.
+        First you will need to import the libraries to use the sensor
+
+        .. code-block:: python
+
+            import board
+            import adafruit_lps35hw
+
+        Once this is done you can define your `board.I2C` object and define your sensor object
+
+        .. code-block:: python
+
+            i2c = board.I2C()   # uses board.SCL and board.SDA
+            lps = adafruit_lps35hw.LPS35HW(i2c)
+
+        Now you have access to the :attr:`temperature` and :attr:`pressure` attributes.
+        Temperature is in Celsius and Pressure is in hPa.
+
+        .. code-block:: python
+
+            temperature = lps.temperature
+            pressure = lps.pressure
+
 
     """
 
     data_rate = RWBits(3, _CTRL_REG1, 4)
-    """The rate at which the sensor measures ``pressure`` and ``temperature``. ``data_rate`` should
-    be set to one of the values of ``adafruit_lps35hw.DataRate``. Note that setting ``data_rate``
-    to ``DataRate.ONE_SHOT`` places the sensor into a low-power shutdown mode where measurements to
-    update ``pressure`` and ``temperature`` are only taken when ``take_measurement`` is called."""
+    """The rate at which the sensor measures :attr:`pressure` and :attr:`temperature`.
+     ``data_rate`` should be set to one of the values of :meth:`adafruit_lps35hw.DataRate`.
+
+    .. note::
+        Setting ``data_rate`` to :const:`DataRate.ONE_SHOT` places the sensor
+        into a low-power shutdown         mode where measurements to update
+        :attr:`pressure` and :attr:`temperature` are only taken
+        when :meth:`take_measurement` is called.
+
+    """
 
     low_pass_enabled = RWBit(_CTRL_REG1, 3)
     """True if the low pass filter is enabled. Setting to `True` will reduce the sensor bandwidth
-    from ``data_rate/2`` to ``data_rate/9``, filtering out high-frequency noise."""
+    from :math:`data_rate/2` to :math:`data_rate/9`, filtering out high-frequency noise."""
 
     _raw_temperature = UnaryStruct(_TEMP_OUT_L, "<h")
     _raw_pressure = ROBits(24, _PRESS_OUT_XL, 0, 3)
@@ -181,7 +214,7 @@ class LPS35HW:  # pylint: disable=too-many-instance-attributes
 
     @property
     def temperature(self):
-        """The current temperature measurement in degrees C"""
+        """The current temperature measurement in degrees Celsius"""
         return self._raw_temperature / 100.0
 
     def reset(self):
@@ -192,26 +225,27 @@ class LPS35HW:  # pylint: disable=too-many-instance-attributes
             pass
 
     def take_measurement(self):
-        """Update the value of ``pressure`` and ``temperature`` by taking a single measurement.
-        Only meaningful if ``data_rate`` is set to ``ONE_SHOT``"""
+        """Update the value of :attr:`pressure` and :attr:`temperature`
+        by taking a single measurement. Only meaningful if ``data_rate``
+        is set to ``ONE_SHOT``"""
         self._one_shot = True
         while self._one_shot:
             pass
 
     def zero_pressure(self):
-        """Set the current pressure as zero and report the ``pressure`` relative to it"""
+        """Set the current pressure as zero and report the :attr:`pressure` relative to it"""
         self._auto_zero = True
         while self._auto_zero:
             pass
 
     def reset_pressure(self):
-        """Reset ``pressure`` to be reported as the measured absolute value"""
+        """Reset :attr:`pressure` to be reported as the measured absolute value"""
         self._reset_zero = True
 
     @property
     def pressure_threshold(self):
-        """The high presure threshold. Use ``high_threshold_enabled`` or  ``high_threshold_enabled``
-        to use it"""
+        """The high pressure threshold. Use :attr:`high_threshold_enabled`
+        or :attr:`high_threshold_enabled` to use it"""
         return self._pressure_threshold / 16
 
     @pressure_threshold.setter
@@ -231,8 +265,12 @@ class LPS35HW:  # pylint: disable=too-many-instance-attributes
 
     @property
     def low_threshold_enabled(self):
-        """Set to `True` or `False` to enable or disable the low pressure threshold. **Note the
-        low pressure threshold only works in relative mode**"""
+        """Set to `True` or `False` to enable or disable the low pressure threshold.
+
+        .. note::
+            The low pressure threshold only works in relative mode
+
+        """
         return self._interrupts_enabled and self._interrupt_low
 
     @low_threshold_enabled.setter
@@ -242,12 +280,14 @@ class LPS35HW:  # pylint: disable=too-many-instance-attributes
 
     @property
     def high_threshold_exceeded(self):
-        """Returns `True` if the pressure high threshold has been exceeded. Must be enabled by
-        setting ``high_threshold_enabled`` to `True` and setting a ``pressure_threshold``."""
+        """Returns `True` if the pressure high threshold has been exceeded.
+        Must be enabled by setting :attr:`high_threshold_enabled` to `True`
+        and setting a :attr:`pressure_threshold`."""
         return self._pressure_high
 
     @property
     def low_threshold_exceeded(self):
-        """Returns `True` if the pressure low threshold has been exceeded. Must be enabled by
-        setting ``high_threshold_enabled`` to `True` and setting a ``pressure_threshold``."""
+        """Returns `True` if the pressure low threshold has been exceeded.
+        Must be enabled by setting :attr:`high_threshold_enabled`
+        to `True` and setting a :attr:`pressure_threshold`."""
         return self._pressure_low
