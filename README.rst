@@ -57,6 +57,11 @@ Usage Example
 
 See the guide at: https://learn.adafruit.com
 
+Documentation
+=============
+
+API documentation for this library can be found on `Read the Docs <https://circuitpython.readthedocs.io/projects/lps35hw/en/latest/>`_.
+
 Contributing
 ============
 
