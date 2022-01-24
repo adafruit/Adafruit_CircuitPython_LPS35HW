@@ -2,7 +2,7 @@ Introduction
 ============
 
 .. image:: https://readthedocs.org/projects/adafruit-circuitpython-lps35hw/badge/?version=latest
-    :target: https://circuitpython.readthedocs.io/projects/lps35hw/en/latest/
+    :target: https://docs.circuitpython.org/projects/lps35hw/en/latest/
     :alt: Documentation Status
 
 .. image:: https://img.shields.io/discord/327254708534116352.svg
@@ -60,7 +60,7 @@ See the guide at: https://learn.adafruit.com
 Documentation
 =============
 
-API documentation for this library can be found on `Read the Docs <https://circuitpython.readthedocs.io/projects/lps35hw/en/latest/>`_.
+API documentation for this library can be found on `Read the Docs <https://docs.circuitpython.org/projects/lps35hw/en/latest/>`_.
 
 Contributing
 ============
