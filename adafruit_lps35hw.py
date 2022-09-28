@@ -57,6 +57,12 @@ from adafruit_register.i2c_struct import UnaryStruct
 from adafruit_register.i2c_bits import RWBits, ROBits
 from adafruit_register.i2c_bit import RWBit
 
+try:
+    import typing  # pylint: disable=unused-import
+    from busio import I2C
+except ImportError:
+    pass
+
 _INTERRUPT_CFG = const(0x0B)
 _THS_P_L = const(0x0C)
 _THS_P_H = const(0x0D)
@@ -187,11 +193,10 @@ class LPS35HW:  # pylint: disable=too-many-instance-attributes
     _chip_id = UnaryStruct(_WHO_AM_I, "<B")
     _pressure_threshold = UnaryStruct(_THS_P_L, "<H")
 
-    def __init__(self, i2c_bus, address=0x5D):
+    def __init__(self, i2c_bus: I2C, address: int = 0x5D) -> None:
         self.i2c_device = i2cdevice.I2CDevice(i2c_bus, address)
         if self._chip_id != 0xB1:
-            raise RuntimeError("Failed to find LPS35HW! Chip ID 0x%x" % self._chip_id)
-
+            raise RuntimeError(f"Failed to find LPS35HW! Chip ID {self._chip_id:#x}")
         self.reset()
 
         # set data_rate to put the sensor in continuous mode
@@ -201,7 +206,7 @@ class LPS35HW:  # pylint: disable=too-many-instance-attributes
         self._interrupt_latch = True
 
     @property
-    def pressure(self):
+    def pressure(self) -> float:
         """The current pressure measurement in hPa"""
         # reset the filter to prevent spurious readings
         self._reset_filter  # pylint: disable=pointless-statement
@@ -213,18 +218,18 @@ class LPS35HW:  # pylint: disable=too-many-instance-attributes
         return raw / 4096.0
 
     @property
-    def temperature(self):
+    def temperature(self) -> float:
         """The current temperature measurement in degrees Celsius"""
         return self._raw_temperature / 100.0
 
-    def reset(self):
+    def reset(self) -> None:
         """Reset the sensor, restoring all configuration registers to their defaults"""
         self._reset = True
         # wait for the reset to finish
         while self._reset:
             pass
 
-    def take_measurement(self):
+    def take_measurement(self) -> None:
         """Update the value of :attr:`pressure` and :attr:`temperature`
         by taking a single measurement. Only meaningful if ``data_rate``
         is set to ``ONE_SHOT``"""
@@ -232,39 +237,39 @@ class LPS35HW:  # pylint: disable=too-many-instance-attributes
         while self._one_shot:
             pass
 
-    def zero_pressure(self):
+    def zero_pressure(self) -> None:
         """Set the current pressure as zero and report the :attr:`pressure` relative to it"""
         self._auto_zero = True
         while self._auto_zero:
             pass
 
-    def reset_pressure(self):
+    def reset_pressure(self) -> None:
         """Reset :attr:`pressure` to be reported as the measured absolute value"""
         self._reset_zero = True
 
     @property
-    def pressure_threshold(self):
+    def pressure_threshold(self) -> float:
         """The high pressure threshold. Use :attr:`high_threshold_enabled`
         or :attr:`high_threshold_enabled` to use it"""
         return self._pressure_threshold / 16
 
     @pressure_threshold.setter
-    def pressure_threshold(self, value):
+    def pressure_threshold(self, value: float) -> None:
         """The high value threshold"""
         self._pressure_threshold = value * 16
 
     @property
-    def high_threshold_enabled(self):
+    def high_threshold_enabled(self) -> bool:
         """Set to `True` or `False` to enable or disable the high pressure threshold"""
         return self._interrupts_enabled and self._interrupt_high
 
     @high_threshold_enabled.setter
-    def high_threshold_enabled(self, value):
+    def high_threshold_enabled(self, value: bool) -> None:
         self._interrupts_enabled = value
         self._interrupt_high = value
 
     @property
-    def low_threshold_enabled(self):
+    def low_threshold_enabled(self) -> bool:
         """Set to `True` or `False` to enable or disable the low pressure threshold.
 
         .. note::
@@ -274,19 +279,19 @@ class LPS35HW:  # pylint: disable=too-many-instance-attributes
         return self._interrupts_enabled and self._interrupt_low
 
     @low_threshold_enabled.setter
-    def low_threshold_enabled(self, value):
+    def low_threshold_enabled(self, value: bool) -> None:
         self._interrupts_enabled = value
         self._interrupt_low = value
 
     @property
-    def high_threshold_exceeded(self):
+    def high_threshold_exceeded(self) -> bool:
         """Returns `True` if the pressure high threshold has been exceeded.
         Must be enabled by setting :attr:`high_threshold_enabled` to `True`
         and setting a :attr:`pressure_threshold`."""
         return self._pressure_high
 
     @property
-    def low_threshold_exceeded(self):
+    def low_threshold_exceeded(self) -> bool:
         """Returns `True` if the pressure low threshold has been exceeded.
         Must be enabled by setting :attr:`high_threshold_enabled`
         to `True` and setting a :attr:`pressure_threshold`."""
