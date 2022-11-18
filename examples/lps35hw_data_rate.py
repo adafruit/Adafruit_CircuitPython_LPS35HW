@@ -5,7 +5,8 @@ import time
 import board
 from adafruit_lps35hw import LPS35HW, DataRate
 
-i2c = board.I2C()
+i2c = board.I2C()  # uses board.SCL and board.SDA
+# i2c = board.STEMMA_I2C()  # For using the built-in STEMMA QT connector on a microcontroller
 lps = LPS35HW(i2c)
 
 lps.data_rate = DataRate.ONE_SHOT
