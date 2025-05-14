@@ -2,7 +2,9 @@
 #
 # SPDX-License-Identifier: Unlicense
 import time
+
 import board
+
 from adafruit_lps35hw import LPS35HW, DataRate
 
 i2c = board.I2C()  # uses board.SCL and board.SDA

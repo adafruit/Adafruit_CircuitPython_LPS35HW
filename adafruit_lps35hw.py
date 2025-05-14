@@ -51,14 +51,15 @@ Implementation Notes
 __version__ = "0.0.0+auto.0"
 __repo__ = "https://github.com/adafruit/Adafruit_CircuitPython_LPS35HW.git"
 
-from micropython import const
 import adafruit_bus_device.i2c_device as i2cdevice
-from adafruit_register.i2c_struct import UnaryStruct
-from adafruit_register.i2c_bits import RWBits, ROBits
 from adafruit_register.i2c_bit import RWBit
+from adafruit_register.i2c_bits import ROBits, RWBits
+from adafruit_register.i2c_struct import UnaryStruct
+from micropython import const
 
 try:
-    import typing  # pylint: disable=unused-import
+    import typing
+
     from busio import I2C
 except ImportError:
     pass
@@ -88,7 +89,7 @@ _TEMP_OUT_H = const(0x2C)
 _LPFP_RES = const(0x33)
 
 
-class DataRate:  # pylint: disable=too-few-public-methods
+class DataRate:
     """Options for ``data_rate``
 
     +---------------------------+-------------------------+
@@ -117,7 +118,7 @@ class DataRate:  # pylint: disable=too-few-public-methods
     RATE_75_HZ = const(0x05)
 
 
-class LPS35HW:  # pylint: disable=too-many-instance-attributes
+class LPS35HW:
     """Driver for the ST LPS35HW MEMS pressure sensor
 
     :param ~busio.I2C i2c_bus: The I2C bus the LPS35HW is connected to.
@@ -209,7 +210,7 @@ class LPS35HW:  # pylint: disable=too-many-instance-attributes
     def pressure(self) -> float:
         """The current pressure measurement in hPa"""
         # reset the filter to prevent spurious readings
-        self._reset_filter  # pylint: disable=pointless-statement
+        self._reset_filter
 
         # check for negative and convert
         raw = self._raw_pressure
