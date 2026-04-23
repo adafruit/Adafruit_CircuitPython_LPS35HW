@@ -16,19 +16,19 @@ lps.take_measurement()
 
 
 while True:
-    print("Pressure: %.2f hPa" % lps.pressure)
+    print(f"Pressure: {lps.pressure:.2f} hPa")
     print("")
     time.sleep(1)
-    print("Pressure: %.2f hPa" % lps.pressure)
+    print(f"Pressure: {lps.pressure:.2f} hPa")
     print("")
     time.sleep(1)
-    print("Pressure: %.2f hPa" % lps.pressure)
+    print(f"Pressure: {lps.pressure:.2f} hPa")
     print("")
     time.sleep(1)
 
     # take another measurement
     lps.take_measurement()
 
-    print("New Pressure: %.2f hPa" % lps.pressure)
+    print(f"New Pressure: {lps.pressure:.2f} hPa")
     print("")
     time.sleep(1)

@@ -18,7 +18,7 @@ lps.pressure_threshold = 1030
 lps.high_threshold_enabled = True
 
 while True:
-    print("Pressure: %.2f hPa" % lps.pressure)
-    print("Threshhold exceeded: %s" % lps.high_threshold_exceeded)
+    print(f"Pressure: {lps.pressure:.2f} hPa")
+    print(f"Threshhold exceeded: {lps.high_threshold_exceeded}")
     print("")
     time.sleep(1)

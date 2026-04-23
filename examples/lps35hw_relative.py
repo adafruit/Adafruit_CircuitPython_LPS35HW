@@ -15,6 +15,6 @@ lps = adafruit_lps35hw.LPS35HW(i2c)
 # relative to that pressure, even negative!
 lps.zero_pressure()
 while True:
-    print("Pressure: %.2f hPa" % lps.pressure)
+    print(f"Pressure: {lps.pressure:.2f} hPa")
     print("")
     time.sleep(0.5)

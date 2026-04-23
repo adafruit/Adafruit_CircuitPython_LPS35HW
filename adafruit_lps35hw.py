@@ -215,7 +215,7 @@ class LPS35HW:
         # check for negative and convert
         raw = self._raw_pressure
         if raw & (1 << 23) != 0:
-            raw = raw - (1 << 24)
+            raw -= 1 << 24
         return raw / 4096.0
 
     @property
